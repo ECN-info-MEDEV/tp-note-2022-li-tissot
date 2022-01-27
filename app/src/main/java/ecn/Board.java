@@ -207,12 +207,17 @@ public class Board {
         return isFull && winner.isEmpty() ? Optional.of(State.NONE) : winner;
     }
 
-    /** Check if a column is available. */
+    /** Check if a column is available.
+     * @param y the column number.
+    */
     public boolean isColAvailable(int y) {
         return IntStream.range(0, this.xSize()).anyMatch(x -> data[x][y] == State.NONE);
     }
 
-    /** Put a checker on the specified column. */
+    /** Put a checker on the specified column.
+     * @param color the color of the player putting this checker.
+     * @param y the column number.
+     */
     public void put(Color color, int y) {
         for (int i = xSize() - 1; i >= 0; i--) {
             if (data[i][y] == State.NONE) {

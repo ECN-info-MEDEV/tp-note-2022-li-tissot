@@ -64,8 +64,29 @@ public class BoardTest {
         b.getData()[5][3] = State.YELLOW;
         b.getData()[4][3] = State.YELLOW;
         b.getData()[3][3] = State.YELLOW;
+        b.put(Color.RED, 3);
+        assertEquals(State.RED, b.getData()[2][3]);
+    }
+
+    @Test
+    void testHasWonNotFull() {
+        var b = new Board();
+        b.getData()[5][3] = State.YELLOW;
+        b.getData()[4][3] = State.YELLOW;
+        b.getData()[3][3] = State.YELLOW;
         b.getData()[2][3] = State.YELLOW;
         b.put(Color.RED, 3);
-        assertEquals(State.RED, b.getData()[1][3]);
+        assertEquals(Optional.of(State.YELLOW), b.hasWon());
+    }
+
+    @Test
+    void testHasWonFull() {
+        var b = new Board();
+        for (int i = 0; i < b.xSize(); i++) {
+            for (int j = 0; j < b.ySize(); j++) {
+                b.getData()[i][j] = State.YELLOW;
+            }
+        }
+        assertEquals(Optional.of(State.YELLOW), b.hasWon());
     }
 }

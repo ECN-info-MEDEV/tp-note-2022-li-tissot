@@ -79,6 +79,9 @@ public class Board {
                 Arrays.stream(this.data).map(bs -> bs.clone()).toArray(i -> this.data.clone()));
     }
 
+    /** Check the board to find if anyone has won in the x direction. 
+     * @return The winner's Color, if any.
+    */
     protected Optional<Color> hasWonX() {
         for (int i = 0; i < this.xSize(); i++) {
             var redCount = 0;
@@ -98,6 +101,9 @@ public class Board {
         return Optional.empty();
     }
 
+    /** Check the board to find if anyone has won in the y direction. 
+     * @return The winner's Color, if any.
+    */
     protected Optional<Color> hasWonY() {
         for (int j = 0; j < this.ySize(); j++) {
             var redCount = 0;
@@ -117,6 +123,9 @@ public class Board {
         return Optional.empty();
     }
 
+    /** Check the board to find if anyone has won in the x-y diagonal direction. 
+     * @return The winner's Color, if any.
+    */
     protected Optional<Color> hasWonDiag0() {
         for (int j = 1; j < this.ySize(); j++) {
             var redCount = 0;
@@ -151,6 +160,9 @@ public class Board {
         return Optional.empty();
     }
 
+    /** Check the board to find if anyone has won in the x-(-y) diagonal. 
+     * @return The winner's Color, if any.
+    */
     protected Optional<Color> hasWonDiag1() {
         for (int j = 1; j < this.ySize(); j++) {
             var redCount = 0;
@@ -186,10 +198,13 @@ public class Board {
     }
 
     /** Check the board to find if anyone has won. 
-     * @return The winner's Color, if any.
+     * @return The winner's State, if any. Optional.of(State.NONE) means the board is full but none has won.
     */
-    public Optional<Color> hasWon() {
-        return hasWonX().or(this::hasWonY).or(this::hasWonDiag0).or(this::hasWonDiag1);
+    public Optional<State> hasWon() {
+        var winner = hasWonX().or(this::hasWonY).or(this::hasWonDiag0).or(this::hasWonDiag1)
+                .map(Color::toState);
+        var isFull = IntStream.range(0, this.ySize()).anyMatch(this::isColAvailable);
+        return isFull && winner.isEmpty() ? Optional.of(State.NONE) : winner;
     }
 
     /** Check if a column is available. */

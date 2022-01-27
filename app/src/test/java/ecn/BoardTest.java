@@ -94,18 +94,6 @@ public class BoardTest {
         assertEquals(Optional.empty(), b.hasWon());
     }
 
-    /*
-    @Test
-    void testHasWonTie() {
-        var b = new Board();
-        for (int i = 0; i < b.xSize(); i++) {
-            for (int j = 0; j < b.ySize(); j++) {
-                b.getData()[i][j] = i < 3 ^ j % 2 == 0 ? State.YELLOW : State.RED;
-            }
-        }
-        assertEquals(Optional.of(State.NONE), b.hasWon());
-    }
-    */
 
     @Test
     void testHasWonFull() {

@@ -4,11 +4,11 @@
 
 NB: all the `gradle` commands can be replaced by a `./gradlew` one if you don't have gradle on your computer.
 
-- `gradle run` to run the project
-- `gradle test` to run the tests
-- `gradle openJavadoc` to generate and open the javadoc (`gradle javadoc` to only generate the javadoc)
-- `gradle sonarqube` to run a sonarqube scan
-- `gradle build` to generate the jar, run the tests and start a sonarqube scan
+- `gradle run` marche mal pour faire fonctionner le projet car il n'est pas prévu pour les interfaces textuelles. Il faut lancer le projet avec l'IDE (ou avec java directement), ou bien générer le jar (`gradle jar` et lancer le jar directement)
+- `gradle testOpen` to run the tests and open the report (`gradle test` to only run the tests)
+- `gradle javadocOpen` to generate and open the javadoc (`gradle javadoc` to only generate the javadoc)
+- `gradle sonarOpen` to run a sonarqube scan and open the report (`gradle sonarqube` to only run the scan)
+- `gradle build` to generate the jar, run the tests and start a sonarqube scan, and open the reports
 
 Before runing a sonarqube scan you need to start a sonarqube server and set some properties in the _gradle.properties_ file (See Sonarqube server part below).
 
@@ -35,7 +35,3 @@ To access sonarqube scan resutls you need to go to http://localhost:9000. Defaul
 ### Other sonarqube server
 
 If you choose to use another sonarqube server, you should set url and token in the _gradle.properties_
-
-## Q-A
-
-→ to complete

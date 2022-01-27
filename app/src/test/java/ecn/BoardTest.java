@@ -57,4 +57,15 @@ public class BoardTest {
         b.getData()[0][3] = State.YELLOW;
         assertEquals(false, b.isColAvailable(3));
     }
+
+    @Test
+    void testPut() {
+        var b = new Board();
+        b.getData()[5][3] = State.YELLOW;
+        b.getData()[4][3] = State.YELLOW;
+        b.getData()[3][3] = State.YELLOW;
+        b.getData()[2][3] = State.YELLOW;
+        b.put(Color.RED, 3);
+        assertEquals(State.RED, b.getData()[1][3]);
+    }
 }

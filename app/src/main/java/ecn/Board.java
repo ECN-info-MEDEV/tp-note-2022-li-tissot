@@ -196,4 +196,14 @@ public class Board {
     public boolean isColAvailable(int y) {
         return IntStream.range(0, this.xSize()).anyMatch(x -> data[x][y] == State.NONE);
     }
+
+    /** Put a checker on the specified column. */
+    public void put(Color color, int y) {
+        for (int i = xSize() - 1; i >= 0; i--) {
+            if (data[i][y] == State.NONE) {
+                data[i][y] = color.toState();
+                return;
+            }
+        }
+    }
 }

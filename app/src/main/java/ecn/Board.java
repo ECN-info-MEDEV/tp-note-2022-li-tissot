@@ -3,8 +3,10 @@ package ecn;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import ecn.utils.Displayable;
 
 public class Board {
+
     public final State[][] data;
 
     public Board(State[][] data) {
@@ -30,10 +32,12 @@ public class Board {
 
     @Override
     public String toString() {
-        return Arrays.stream(this.data)
+        String content = Arrays.stream(this.data)
                 .map(l -> IntStream.range(0, l.length).mapToObj(i -> l[i].toString())
                         .collect(Collectors.joining()))
-                .collect(Collectors.joining("\n", "", "\n")) + "0123456";
+                .collect(Collectors.joining("\n", "",
+                        Displayable.RESET + "\n" + Displayable.BLUE_BACKGROUND));
+        return Displayable.BLUE_BACKGROUND + content + Displayable.RESET + "0 1 2 3 4 5 6";
     }
 
     public Board deepCopy() {

@@ -1,5 +1,8 @@
 package ecn;
 
+import lombok.ToString;
+
+@ToString
 public enum Color {
     RED, YELLOW;
 

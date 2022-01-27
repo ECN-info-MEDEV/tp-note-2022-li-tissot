@@ -203,7 +203,7 @@ public class Board {
     public Optional<State> hasWon() {
         var winner = hasWonX().or(this::hasWonY).or(this::hasWonDiag0).or(this::hasWonDiag1)
                 .map(Color::toState);
-        var isFull = IntStream.range(0, this.ySize()).anyMatch(this::isColAvailable);
+        var isFull = !IntStream.range(0, this.ySize()).anyMatch(this::isColAvailable);
         return isFull && winner.isEmpty() ? Optional.of(State.NONE) : winner;
     }
 

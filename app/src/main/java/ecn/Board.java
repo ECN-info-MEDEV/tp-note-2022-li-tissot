@@ -191,4 +191,9 @@ public class Board {
     public Optional<Color> hasWon() {
         return hasWonX().or(this::hasWonY).or(this::hasWonDiag0).or(this::hasWonDiag1);
     }
+
+    /** Check if a column is available. */
+    public boolean isColAvailable(int y) {
+        return IntStream.range(0, this.xSize()).anyMatch(x -> data[x][y] == State.NONE);
+    }
 }

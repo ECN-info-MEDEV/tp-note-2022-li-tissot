@@ -1,6 +1,7 @@
 package ecn;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import ecn.utils.Displayable;
@@ -8,6 +9,15 @@ import lombok.Data;
 
 /**
  * The board of the game.
+ * 
+ * Convention:
+ * x  0
+ * |  1
+ * v  2
+ *    3
+ *    4
+ *    5
+ * y -> 0 1 2 3 4 5 6
  */
 @Data
 public class Board {
@@ -67,5 +77,111 @@ public class Board {
     public Board deepCopy() {
         return new Board(
                 Arrays.stream(this.data).map(bs -> bs.clone()).toArray(i -> this.data.clone()));
+    }
+
+    protected Optional<Color> hasWonX() {
+        for (int i = 0; i < this.xSize(); i++) {
+            var redCount = 0;
+            var yellowCount = 0;
+            for (int j = 0; j < this.ySize(); j++) {
+                if (data[i][j] == State.RED) {
+                    redCount++;
+                    if (redCount >= 4)
+                        return Optional.of(Color.RED);
+                } else if (data[i][j] == State.YELLOW) {
+                    yellowCount++;
+                    if (yellowCount >= 4)
+                        return Optional.of(Color.YELLOW);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    protected Optional<Color> hasWonY() {
+        for (int j = 0; j < this.ySize(); j++) {
+            var redCount = 0;
+            var yellowCount = 0;
+            for (int i = 0; i < this.xSize(); i++) {
+                if (data[i][j] == State.RED) {
+                    redCount++;
+                    if (redCount >= 4)
+                        return Optional.of(Color.RED);
+                } else if (data[i][j] == State.YELLOW) {
+                    yellowCount++;
+                    if (yellowCount >= 4)
+                        return Optional.of(Color.YELLOW);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    protected Optional<Color> hasWonDiag0() {
+        for (int j = 1; j < this.ySize(); j++) {
+            var redCount = 0;
+            var yellowCount = 0;
+            for (int i = 0; i < this.ySize() - j; i++) {
+                if (data[i][j + i] == State.RED) {
+                    redCount++;
+                    if (redCount >= 4)
+                        return Optional.of(Color.RED);
+                } else if (data[i][j + i] == State.YELLOW) {
+                    yellowCount++;
+                    if (yellowCount >= 4)
+                        return Optional.of(Color.YELLOW);
+                }
+            }
+        }
+        for (int i = 0; i < this.xSize(); i++) {
+            var redCount = 0;
+            var yellowCount = 0;
+            for (int j = 0; j < this.xSize() - i; j++) {
+                if (data[i + j][j] == State.RED) {
+                    redCount++;
+                    if (redCount >= 4)
+                        return Optional.of(Color.RED);
+                } else if (data[i + j][j] == State.YELLOW) {
+                    yellowCount++;
+                    if (yellowCount >= 4)
+                        return Optional.of(Color.YELLOW);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    protected Optional<Color> hasWonDiag1() {
+        for (int j = 1; j < this.ySize(); j++) {
+            var redCount = 0;
+            var yellowCount = 0;
+            for (int i = 0; i < this.ySize() - j; i++) {
+                if (data[xSize() - 1 - i][j + i] == State.RED) {
+                    redCount++;
+                    if (redCount >= 4)
+                        return Optional.of(Color.RED);
+                } else if (data[xSize() - 1 - i][j + i] == State.YELLOW) {
+                    yellowCount++;
+                    if (yellowCount >= 4)
+                        return Optional.of(Color.YELLOW);
+                }
+            }
+        }
+        for (int i = 0; i < this.xSize(); i++) {
+            var redCount = 0;
+            var yellowCount = 0;
+            for (int j = 0; j < this.xSize() - i; j++) {
+                if (data[xSize() - 1 - i - j][j] == State.RED) {
+                    redCount++;
+                    if (redCount >= 4)
+                        return Optional.of(Color.RED);
+                } else if (data[xSize() - 1 - i - j][j] == State.YELLOW) {
+                    yellowCount++;
+                    if (yellowCount >= 4)
+                        return Optional.of(Color.YELLOW);
+                }
+            }
+        }
+        return Optional.empty();
     }
 }

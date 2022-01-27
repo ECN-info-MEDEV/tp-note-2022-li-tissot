@@ -1,0 +1,105 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
+plugins {
+    // Apply the application plugin to add support for building a CLI application in Java.
+    id 'application'
+    // sonar scanner
+    id "org.sonarqube" version "3.3"
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+ext {
+   javaMainClass = "ecn.App"
+}
+
+dependencies {
+    // Use JUnit Jupiter for testing.
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+
+    // This dependency is used by the application.
+    implementation 'com.google.guava:guava:30.1.1-jre'
+}
+
+application {
+    // Define the main class for the application.
+    mainClass.set(javaMainClass)
+}
+
+jar {
+  manifest {
+    attributes(
+      // Define the main class for the jar
+      'Main-Class': javaMainClass
+    )
+  }
+}
+
+tasks.named('test') {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
+
+// Tasks
+
+tasks.javadoc.doFirst {
+    println 'Exporting javadoc under `./build/docs/javadoc`...'
+}
+
+tasks.build.doFirst {
+    println 'Building...'
+}
+
+tasks.build.dependsOn('jar')
+tasks.build.dependsOn('test')
+tasks.build.dependsOn('sonarqube')
+
+tasks.sonarqube.doFirst {
+    println 'Scanning with sonarqube...'
+}
+
+tasks.run.doFirst {
+    println 'Running...'
+}
+
+tasks.test.doFirst {
+    println 'Testing...'
+}
+
+tasks.jar.doFirst {
+    println 'Generating jar under `./build/libs`'
+}
+
+task javadocOpen(type:Exec) {
+    dependsOn 'javadoc'
+    description 'Opens javadoc.'
+
+    workingDir './build/docs/javadoc'
+
+    // Let Linux be the default case.
+    commandLine 'xdg-open', 'index.html'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        workingDir System.getProperty("user.dir") + '/build/docs/javadoc'
+        commandLine 'pwsh', '-Command', 'Invoke-Item index.html'
+    } else if (Os.isFamily(Os.FAMILY_MAC)) {
+        commandLine 'open', 'index.html'
+    }
+}
+
+task sonarUp(type:Exec) {
+    workingDir '..'
+    commandLine 'docker-compose', 'up', '-d'
+}
+
+task sonarDown(type:Exec) {
+    workingDir '..'
+    commandLine 'docker-compose', 'down'
+}
+
+task sonarToken(type:Exec) {
+    workingDir '..'
+    commandLine 'curl', '-X POST', '-u admin:abc', '-F "name=' + UUID.randomUUID().toString() + '"', 'http://localhost:9000/api/user_tokens/generate'
+}

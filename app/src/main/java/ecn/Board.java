@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Board {
-    State[][] data;
+    public final State[][] data;
 
     public Board(State[][] data) {
         this.data = data;
@@ -33,12 +33,13 @@ public class Board {
         return Arrays.stream(this.data)
                 .map(l -> IntStream.range(0, l.length).mapToObj(i -> l[i].toString())
                         .collect(Collectors.joining()))
-                .collect(Collectors.joining("\n", "", "\n")) + "1234567";
+                .collect(Collectors.joining("\n", "", "\n")) + "0123456";
     }
 
     public Board deepCopy() {
         return new Board(
                 Arrays.stream(this.data).map(bs -> bs.clone()).toArray(i -> this.data.clone()));
     }
+
 
 }

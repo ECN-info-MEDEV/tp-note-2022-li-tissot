@@ -57,8 +57,8 @@ tasks.build.doFirst {
 }
 
 tasks.build.dependsOn('jar')
-tasks.build.dependsOn('test')
-tasks.build.dependsOn('sonarqube')
+tasks.build.dependsOn('testOpen')
+tasks.build.dependsOn('sonarOpen')
 tasks.sonarqube.dependsOn('jacocoTestReport')
 
 tasks.sonarqube.doFirst {
@@ -90,6 +90,35 @@ task javadocOpen(type:Exec) {
         commandLine 'pwsh', '-Command', 'Invoke-Item index.html'
     } else if (Os.isFamily(Os.FAMILY_MAC)) {
         commandLine 'open', 'index.html'
+    }
+}
+
+task testOpen(type:Exec) {
+    dependsOn 'test'
+    description 'run tests and open report.'
+
+    workingDir './build/reports/tests/test'
+
+    // Let Linux be the default case.
+    commandLine 'xdg-open', 'index.html'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        workingDir System.getProperty("user.dir") + '/build/reports/tests/test'
+        commandLine 'pwsh', '-Command', 'Invoke-Item index.html'
+    } else if (Os.isFamily(Os.FAMILY_MAC)) {
+        commandLine 'open', 'index.html'
+    }
+}
+
+task sonarOpen(type:Exec) {
+    dependsOn 'sonarqube'
+    description 'Generates and open sonarqube report.'
+
+    // Let Linux be the default case.
+    commandLine 'xdg-open', 'http://localhost:9000/dashboard?id=ds-li-tissot%3Aapp'
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        commandLine 'pwsh', '-Command', 'Invoke-Item http://localhost:9000/dashboard?id=ds-li-tissot%3Aapp'
+    } else if (Os.isFamily(Os.FAMILY_MAC)) {
+        commandLine 'open', 'http://localhost:9000/dashboard?id=ds-li-tissot%3Aapp'
     }
 }
 

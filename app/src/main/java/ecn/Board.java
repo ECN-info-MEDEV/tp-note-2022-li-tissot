@@ -184,4 +184,11 @@ public class Board {
         }
         return Optional.empty();
     }
+
+    /** Check the board to find if anyone has won. 
+     * @return The winner's Color, if any.
+    */
+    public Optional<Color> hasWon() {
+        return hasWonX().or(this::hasWonY).or(this::hasWonDiag0).or(this::hasWonDiag1);
+    }
 }

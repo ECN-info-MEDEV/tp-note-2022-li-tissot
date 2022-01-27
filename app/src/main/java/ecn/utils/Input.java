@@ -21,4 +21,17 @@ public class Input {
         return getString();
     }
 
+    public static int getInt(String message) {
+        return getInt(message, "You must put an integer: ");
+    }
+
+    public static int getInt(String message, String errorMessage) {
+        String input = getString(message);
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            return getInt(errorMessage, errorMessage);
+        }
+    }
+
 }
